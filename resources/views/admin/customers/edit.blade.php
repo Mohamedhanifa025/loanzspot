@@ -26,7 +26,7 @@
                 <label for="name">{{ trans('global.customer.fields.name') }}*</label>
                 <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($customer) ? $customer->name : '') }}">
                 @if($errors->has('name'))
-                    <p class="help-block">
+                    <p class="help-block text-red">
                         {{ $errors->first('name') }}
                     </p>
                 @endif
@@ -38,7 +38,7 @@
                 <label for="mobile_number">{{ trans('global.customer.fields.mobile_number') }}</label>
                 <input type="number" id="mobile_number" name="mobile_number" class="form-control" value="{{ old('name', isset($customer) ? $customer->mobile_number : '') }}">
                 @if($errors->has('mobile_number'))
-                    <p class="help-block">
+                    <p class="help-block text-red">
                         {{ $errors->first('mobile_number') }}
                     </p>
                 @endif
@@ -50,7 +50,7 @@
                 <label for="email">{{ trans('global.customer.fields.email') }}</label>
                 <input type="text" id="email" name="email" class="form-control" value="{{ old('email', isset($customer) ? $customer->email : '') }}">
                 @if($errors->has('email'))
-                    <p class="help-block">
+                    <p class="help-block text-red">
                         {{ $errors->first('email') }}
                     </p>
                 @endif
@@ -63,7 +63,7 @@
                     <input type="password" id="password" name="password" class="form-control"
                            value="">
                     @if($errors->has('password'))
-                        <p class="help-block">
+                        <p class="help-block text-red">
                             {{ $errors->first('password') }}
                         </p>
                     @endif
@@ -75,7 +75,7 @@
                 <label for="address">{{ trans('global.customer.fields.email') }}</label>
                 <input type="text" id="address" name="address" class="form-control" value="{{ old('address', isset($customer) ? $customer->address : '') }}">
                 @if($errors->has('address'))
-                    <p class="help-block">
+                    <p class="help-block text-red">
                         {{ $errors->first('address') }}
                     </p>
                 @endif
@@ -87,7 +87,7 @@
                 <label for="city">{{ trans('global.customer.fields.city') }}</label>
                 <input type="text" id="city" name="city" class="form-control" value="{{ old('city', isset($customer) ? $customer->city : '') }}">
                 @if($errors->has('city'))
-                    <p class="help-block">
+                    <p class="help-block text-red">
                         {{ $errors->first('city') }}
                     </p>
                 @endif
@@ -99,7 +99,7 @@
                 <label for="pincode">{{ trans('global.customer.fields.pincode') }}</label>
                 <input type="text" id="pincode" name="pincode" class="form-control" value="{{ old('pincode', isset($customer) ? $customer->pincode : '') }}">
                 @if($errors->has('pincode'))
-                    <p class="help-block">
+                    <p class="help-block text-red">
                         {{ $errors->first('pincode') }}
                     </p>
                 @endif
@@ -116,7 +116,7 @@
                     @endforeach
                 </select>
                 @if($errors->has('referred_by'))
-                    <p class="help-block">
+                    <p class="help-block text-red">
                         {{ $errors->first('referred_by') }}
                     </p>
                 @endif
@@ -131,7 +131,7 @@
                     <option value="0" {{ (isset($customer) && $customer->status == 0)?'selected="selected"':''}}>InActive</option>
                 </select>
                 @if($errors->has('status'))
-                    <p class="help-block">
+                    <p class="help-block text-red">
                         {{ $errors->first('status') }}
                     </p>
                 @endif

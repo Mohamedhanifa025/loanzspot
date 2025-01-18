@@ -50,34 +50,58 @@
                             </div>
                         </form>
                     </div>
+                    @php
+                    $admin = in_array('Admin', auth()->user()->roles->pluck('title')->toArray());
+                    $channelPartner = in_array('Channel Partner', auth()->user()->roles->pluck('title')->toArray());
+                    $leadMaker = in_array('Lead Maker', auth()->user()->roles->pluck('title')->toArray());
+                    $status = request()->status ? decrypt(request()->status) : '';
+                    @endphp
                     <div class="table-responsive">
                         <table class="datatable table align-items-center table-flush">
                             <thead>
                             <tr>
+                                <th scope="col" data-orderable="false">{{ trans('global.loan.fields.crm_number') }}</th>
+                                @if($admin || $channelPartner)
                                 <th scope="col" data-orderable="false">{{ trans('global.loan.fields.name') }}</th>
+                                @if($admin || $status == '1')
                                 <th scope="col" data-orderable="false">{{ trans('global.loan.fields.email') }}</th>
-                                @if(in_array(1, auth()->user()->roles->pluck('id')->toArray()))
                                 <th scope="col" data-orderable="false">{{ trans('global.loan.fields.mobile_number') }}</th>
+                                @endif
                                 @endif
                                 <th scope="col" data-orderable="false">{{ trans('global.loan.fields.type') }}</th>
                                 {{--<th scope="col" data-orderable="false">{{ trans('global.loan.fields.city') }}</th>--}}
                                 <th scope="col" data-orderable="false">{{ trans('global.loan.fields.status') }}</th>
-                                <th scope="col" class="text-center" data-orderable="false">{{ trans('global.actions') }}</th>
+                                @if($leadMaker)
+                                    <th scope="col" class="" data-orderable="false">{{ trans('global.loan.fields.lead_date') }}</th>
+                                @endif
+                                @if($admin || ($channelPartner && $status == '1'))
+                                <th scope="col" class="" data-orderable="false">{{ trans('global.actions') }}</th>
+                                @endif
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($loans as $key => $loan)
+                                @php
+                                    $idLen = strlen($loan->id);
+                                    $zeros = $idLen == 1 ? '00' : ($idLen == 2 ? '0' : '');
+                                    $crmNumber = $zeros.$loan->id;
+                                @endphp
                                 <tr data-entry-id="{{ $loan->id }}">
+                                    <td>
+                                        {{ 'LS_CRM_'. $crmNumber }}
+                                    </td>
+                                    @if($admin || $channelPartner)
                                     <td>
                                         {{ $loan->name ?? '' }}
                                     </td>
+                                    @if($admin || $status == '1')
                                     <td>
                                         {{ $loan->email ?? '' }}
                                     </td>
-                                    @if(in_array(1, auth()->user()->roles->pluck('id')->toArray()))
                                     <td>
                                         {{ $loan->mobile_number ?? '' }}
                                     </td>
+                                    @endif
                                     @endif
                                     <td>
                                         {{ $loan->type_text ?? '' }}
@@ -85,9 +109,15 @@
                                     {{--<td>
                                         {{ $loan->city ?? '' }}
                                     </td>--}}
-                                    <td class="font-weight-bold text-center">
-                                        <span class="py-1 text-uppercase px-2 rounded small {{ $loan->status == 1 ? 'bg-success':'bg-danger' }} text-white">{{ $loan->status_text ?? '' }}</span>
+                                    <td class="font-weight-bold">
+                                        <span class="py-1 text-uppercase px-2 rounded small bg- {{ $loan->status == 1 ? 'bg-success': ($loan->status == 0 ? 'bg-warning' : 'bg-danger') }} text-white">{{ $loan->status_text ?? '' }}</span>
                                     </td>
+                                    @if($leadMaker)
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($loan->created_at)->format('d-M-y') }}
+                                        </td>
+                                    @endif
+                                    @if($admin || ($channelPartner && $status == '1'))
                                     <td class="actions text-center">
                                         {{--<a href="view-loan" class="edit"><i class="fa fa-eye"></i></a>
                                         <a class="edit" data-toggle="modal" data-target="#edit-form"><i class="fa fa-pen"></i></a>
@@ -102,7 +132,7 @@
                                             <a class="delete" data-toggle="modal" data-target="#delete-form" data-id="{{ $loan->id }}"><i class="fa fa-trash-alt"></i></a>
                                         @endcan
                                     </td>
-
+                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>

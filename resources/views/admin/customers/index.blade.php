@@ -90,6 +90,9 @@
                                         <a class="delete" data-toggle="modal" data-target="#delete-form"><i class="fa fa-trash-alt"></i></a>--}}
                                         @can('customer_show')
                                             <a href="{{ route('admin.customers.show', $customer->id) }}"class="edit"><i class="fa fa-eye"></i></a>
+                                            @if(!\App\User::where('email', $customer->email)->exists())
+                                                <a href="{{ route('admin.lead-makers.convert', ['id' => $customer->id]) }}" title="Convert to Lead Maker"><i class="fa fa-user-tie"></i></a>
+                                            @endif
                                         @endcan
                                         @can('customer_edit')
                                             <a class="edit" href="{{ route('admin.customers.edit', $customer->id) }}"><i class="fa fa-pen"></i></a>

@@ -18,7 +18,7 @@ class NotificationsController extends Controller
               });
       }
 
-      $notifications = $notifications->get();
+      $notifications = $notifications->orderBy('id', 'desc')->get();
 
       return view('admin.notifications.index' , compact('notifications'));
   }

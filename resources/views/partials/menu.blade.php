@@ -7,6 +7,10 @@
                 <img src="{{ asset('assets/img/logo.svg') }}" class="navbar-brand-img" alt="Logo">
             </a>
         </div>
+        @php
+            $roles = auth()->user()->roles->pluck('title')->toArray();
+            $leadMakerRole = (in_array('Lead Maker', $roles)) ? true : false;
+        @endphp
         <div class="navbar-inner">
             <!-- Collapse -->
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
@@ -61,33 +65,54 @@
                         </a>
                     </li>
                     @endcan
-                    {{--@can('contact_access')--}}
+                    @can('contact_access')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route("admin.contacts.index") }}">
                             <i class="fas fa-address-book" aria-hidden="true"></i>
                             <span class="nav-link-text">{{ trans('global.contact.title') }}</span>
                         </a>
                     </li>
-                    {{--@endcan--}}
+                    @endcan
+                    @can('contact_access')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route("admin.notifications.index") }}">
                             <i class="fas fa-bell" aria-hidden="true"></i>
                             <span class="nav-link-text">{{ trans('global.notification.title') }}</span>
                         </a>
                     </li>
+                    @endcan
+                    @can('contact_access')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route("admin.loans.index") }}">
                             <i class="fa fa-address-card" aria-hidden="true"></i>
                             <span class="nav-link-text">{{ trans('global.loan.title') }}</span>
                         </a>
                     </li>
-
+                    @endcan
+                    @can('channel_access')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route("admin.channels.index") }}">
+                            <i class="fa fa-building" aria-hidden="true"></i>
+                            <span class="nav-link-text">{{ trans('global.channel.title') }}</span>
+                        </a>
+                    </li>
+                    @endcan
+                    @can('lead_maker_access')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route("admin.lead-makers.index") }}">
+                            <i class="fa fa-suitcase" aria-hidden="true"></i>
+                            <span class="nav-link-text">{{ trans('global.lead_maker.title') }}</span>
+                        </a>
+                    </li>
+                    @endcan
+                    @can('contact_access')
                     {{--<li class="nav-item">
                         <a class="nav-link" href="{{ route("admin.referrals.index") }}">
                             <i class="fas fa-sync" aria-hidden="true"></i>
                             <span class="nav-link-text">{{ trans('global.referral.title') }}</span>
                         </a>
                     </li>--}}
+                    @endcan
                     @can('setting_access')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route("admin.settings.index") }}">
@@ -104,6 +129,38 @@
                         </a>
                     </li>
                     @endcan
+                    @can('approved_loan')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("admin.loans.index", ['status'=>encrypt(1)]) }}">
+                                <i class="fa fa-suitcase"></i>
+                                <span class="nav-link-text">{{ str_replace('Loans', ($leadMakerRole ? 'Leads' : 'Loans'), trans('global.loan.approved_loans')) }}</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('pending_loan')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("admin.loans.index", ['status'=>encrypt(0)]) }}">
+                                <i class="fa fa-suitcase"></i>
+                                <span class="nav-link-text">{{ str_replace('Loans', ($leadMakerRole ? 'Leads' : 'Loans'), trans('global.loan.pending_loans')) }}</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('rejected_loan')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("admin.loans.index", ['status'=>encrypt(2)]) }}">
+                                <i class="fa fa-suitcase"></i>
+                                <span class="nav-link-text">{{ str_replace('Loans', ($leadMakerRole ? 'Leads' : 'Loans'), trans('global.loan.rejected_loans')) }}</span>
+                            </a>
+                        </li>
+                    @endcan
+                    {{--@can('rejected_loan')--}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("admin.payment-transfer.index") }}">
+                                <i class="fa fa-suitcase"></i>
+                                <span class="nav-link-text">{{ trans('global.payment_transfer') }}</span>
+                            </a>
+                        </li>
+                    {{--@endcan--}}
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                             <i class="fas fa-sign-out-alt"></i>

@@ -44,9 +44,10 @@
                         {{ \Session::get('error') }}
                     </p>
                 @endif
-   
+
             <form class="form" method="POST" action="{{ route('apply.loan.store') }}">
                 @csrf
+                <input type="hidden" name="lead_reference_id" value="{{ request()->utm_source ?? '' }}">
                 <div class="form-group">
                     <label for="">Loan Type</label>
                     <select id="loan-type" name="type" class="form-control {{ $errors->has('type') ? ' is-invalid' : '' }}">

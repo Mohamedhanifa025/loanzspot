@@ -39,8 +39,10 @@ class User extends Authenticatable
         'mobile_number',
         'address',
         'city',
-        'pincode'
+        'pincode',
+        'referred_by'
     ];
+
 
     protected $appends = ['employee_id'];
 
@@ -79,5 +81,15 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function channel()
+    {
+        return $this->hasMany(Channel::class);
+    }
+
+    public function leadMaker()
+    {
+        return $this->hasOne(LeadMaker::class);
     }
 }

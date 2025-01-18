@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\ReferralsController;
 use App\Http\Controllers\Admin\SettingsController;
 
 
-Route::redirect('/', '/apply-loan');
+Route::redirect('/', '/office/public/apply-loan');
 
 Route::redirect('/home', '/admin')->name('home');
 
@@ -81,5 +81,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('settings', 'SettingsController');
 
     Route::post('import', 'ContactsController@import')->name('import');
+
+    Route::resource('channels', 'ChannelsController');
+    Route::resource('lead-makers', 'LeadMakersController');
+    Route::resource('payment-transfer', 'PaymentTransferController');
+    Route::get('lead-makers/tree-view/{id}', 'LeadMakersController@treeView')->name('lead-makers.tree-view');
+    Route::get('lead-makers/convert/{id}', 'LeadMakersController@convert')->name('lead-makers.convert');
+
 
 });

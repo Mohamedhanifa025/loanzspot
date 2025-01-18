@@ -434,12 +434,16 @@
                                     <label for="status">{{ trans('global.loan.fields.status') }}</label>
                                     <select name="status" id="status" class="form-control">
                                         <option
-                                            value="1" {{ (isset($loan) && $loan->status == 1)?'selected="selected"':''}}>
-                                            Active
+                                            value="0" {{ (isset($loan) && $loan->status == 0)?'selected="selected"':''}}>
+                                            Pending
                                         </option>
                                         <option
-                                            value="0" {{ (isset($loan) && $loan->status == 0)?'selected="selected"':''}}>
-                                            InActive
+                                            value="1" {{ (isset($loan) && $loan->status == 1)?'selected="selected"':''}}>
+                                            Approved
+                                        </option>
+                                        <option
+                                            value="2" {{ (isset($loan) && $loan->status == 2)?'selected="selected"':''}}>
+                                            Rejected
                                         </option>
                                     </select>
                                     @if($errors->has('status'))
