@@ -29,7 +29,7 @@ class ContactsController extends Controller
             $contacts = $contacts->where('user_id', auth()->user()->id);
         }
 
-        $contacts = $contacts->get();
+        $contacts = $contacts->orderBy('id', 'desc')->get();
 
         $users = User::all();
 

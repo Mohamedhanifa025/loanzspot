@@ -16,12 +16,12 @@ class PaymentTransferController extends Controller
      */
     public function index(Request $request)
     {
-        $payments = PaymentTransfer::get();
+        $payments = PaymentTransfer::orderBy('id', 'desc')->get();
         $leadMaker = auth()->user()->leadMaker;
         if($leadMaker || $request->has('search')) {
             $leadMaker = LeadMaker::where('lead_maker_id', $request->search)->first();
             $leadMaker = $leadMaker ?? auth()->user()->leadMaker;
-            $payments = PaymentTransfer::where('lead_maker_id', $leadMaker->id ?? null)->get();
+            $payments = PaymentTransfer::where('lead_maker_id', $leadMaker->id ?? null)->orderBy('id', 'desc')->get();
         }
         return view('admin.lead_makers.payment_transfer', compact('payments'));
     }

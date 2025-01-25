@@ -30,12 +30,16 @@
                             @method('PUT')
                             @csrf
                             <div class="col-md-6 form-group">
+                                @if(in_array('Admin', auth()->user()->roles()->pluck('title')->toArray()))
+                                    <input type="hidden" name="channel_id" value="">
+                                @else
                                 <label class="form-control-label">Channel <span class="text-red">*</span></label>
                                 <select class="form-control" name="channel_id" required readonly>
                                     @foreach($channels as $channel)
                                         <option value="{{ $channel->id }}" {{ $leadMaker->channel_id == $channel->id ? 'selected' : '' }}>{{ $channel->name }}</option>
                                     @endforeach
                                 </select>
+                                @endif
                             </div>
                             <div class="col-md-6 form-group">
                                 <label class="form-control-label">Lead Maker ID <span class="small">(Automatically generated)</span></label>

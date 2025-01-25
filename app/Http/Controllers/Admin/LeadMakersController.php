@@ -28,10 +28,10 @@ class LeadMakersController extends Controller
      */
     public function index()
     {
-        $leadMakers = LeadMaker::all();
+        $leadMakers = LeadMaker::orderBy('id', 'desc')->get();
         if (count(auth()->user()->channel)) {
             $channels = auth()->user()->channel()->pluck('id')->toArray();
-            $leadMakers= LeadMaker::whereIn('channel_id', $channels)->get();
+            $leadMakers= LeadMaker::whereIn('channel_id', $channels)->orderBy('id', 'desc')->get();
         }
         return view('admin.lead_makers.index', compact('leadMakers'));
     }

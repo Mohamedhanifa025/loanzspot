@@ -17,7 +17,7 @@ class ChannelsController extends Controller
      */
     public function index()
     {
-        $channels = Channel::all();
+        $channels = Channel::orderBy('id', 'desc')->get();
 
         return view('admin.channels.index', compact('channels'));
     }

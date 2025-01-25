@@ -23,7 +23,7 @@ class CustomersController extends Controller
             $customers = $customers->where('status', $request->status);
         }
 
-        $customers = $customers->get();
+        $customers = $customers->orderBy('id', 'desc')->get();
 
       return view('admin.customers.index' , compact('customers'));
     }

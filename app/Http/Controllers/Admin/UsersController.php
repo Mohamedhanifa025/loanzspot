@@ -31,7 +31,7 @@ class UsersController extends Controller
             $users = $users->where('status', $request->status);
         }
 
-        $users = $users->get();
+        $users = $users->orderBy('id', 'desc')->get();
 
         return view('admin.users.index', compact('users'));
     }

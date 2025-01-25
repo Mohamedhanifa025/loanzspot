@@ -10,6 +10,7 @@ use App\Notification;
 use App\PaymentTransfer;
 use App\Referral;
 use App\ReferralBonus;
+use App\Setting;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +21,6 @@ class LoansController extends Controller
   {
       $leadMakers = null;
       $loans = new ApplyLoan;
-
       if ($request->has('term') && $request->term != '') {
           $loans = $loans->where(function ($q) use($request) {
               $l = $q->where('name', 'LIKE', "%$request->term%")
@@ -50,7 +50,7 @@ class LoansController extends Controller
       if(!is_null($leadMakers)) {
           $loans = $loans->whereIn('lead_reference_id', $leadMakers);
       }
-      $loans = $loans->get();
+      $loans = $loans->orderBy('id', 'desc')->get();
 
     return view('admin.loans.index' , compact('loans'));
   }
@@ -175,21 +175,23 @@ class LoansController extends Controller
             throw new Exception("Loan not found");
         }
 
-        $referrer = $loan->referrer->user->id;
+        $referrer = $loan->referrer ? $loan->referrer->user->id : null;
         $level = 1;
-        $bonusAmounts = [1 => 1000, 2 => 500, 3 => 250];
+        $settings = Setting::where('type', 'rewards')->pluck('value', 'key')->toArray();
+        $bonusAmounts = [1 => $settings['primary_reward_value'], 2 => $settings['secondary_reward_value'], 3 => $settings['territory_reward_value']];
+        if(!is_null($referrer)) {
+            while ($referrer && $level <= 3) {
+                ReferralBonus::create([
+                    'loan_id' => $loan->id,
+                    'referrer_id' => $referrer,
+                    'level' => $level,
+                    'bonus_amount' => $bonusAmounts[$level],
+                ]);
+                $this->checkReferralBonusAndNotify($referrer);
 
-        while ($referrer && $level <= 3) {
-            ReferralBonus::create([
-                'loan_id' => $loan->id,
-                'referrer_id' => $referrer,
-                'level' => $level,
-                'bonus_amount' => $bonusAmounts[$level],
-            ]);
-            $this->checkReferralBonusAndNotify($referrer);
-
-            $referrer = User::find($referrer)->referred_by;
-            $level++;
+                $referrer = User::find($referrer)->referred_by;
+                $level++;
+            }
         }
     }
 

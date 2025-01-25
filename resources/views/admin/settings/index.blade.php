@@ -55,7 +55,7 @@
                                                 @csrf
                                                 <input type="hidden" name="type" value="smtp">
                                                 <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-                                                    <label for="smtp_host">{{ trans('global.setting.fields.smtp_host') }}*</label>
+                                                    <label for="smtp_host">{{ trans('global.setting.fields.smtp_host') }}<span class="text-red">*</span></label>
                                                     <input type="text" id="smtp_host" name="smtp_host" class="form-control" value="{{ $settings['smtp_host'] }}">
                                                     @if($errors->has('smtp_host'))
                                                         <p class="help-block">
@@ -67,7 +67,7 @@
                                                     </p>
                                                 </div>
                                                 <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-                                                    <label for="smtp_host">{{ trans('global.setting.fields.smtp_port') }}*</label>
+                                                    <label for="smtp_host">{{ trans('global.setting.fields.smtp_port') }}<span class="text-red">*</span></label>
                                                     <input type="text" id="smtp_port" name="smtp_port" class="form-control" value="{{ $settings['smtp_port'] }}">
                                                     @if($errors->has('smtp_port'))
                                                         <p class="help-block">
@@ -79,7 +79,7 @@
                                                     </p>
                                                 </div>
                                                 <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-                                                    <label for="smtp_username">{{ trans('global.setting.fields.smtp_username') }}*</label>
+                                                    <label for="smtp_username">{{ trans('global.setting.fields.smtp_username') }}<span class="text-red">*</span></label>
                                                     <input type="text" id="smtp_username" name="smtp_username" class="form-control" value="{{ $settings['smtp_username'] }}">
                                                     @if($errors->has('smtp_username'))
                                                         <p class="help-block">
@@ -91,7 +91,7 @@
                                                     </p>
                                                 </div>
                                                 <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-                                                    <label for="smtp_password">{{ trans('global.setting.fields.smtp_password') }}*</label>
+                                                    <label for="smtp_password">{{ trans('global.setting.fields.smtp_password') }}<span class="text-red">*</span></label>
                                                     <input type="text" id="smtp_password" name="smtp_password" class="form-control" value="{{ $settings['smtp_password'] }}">
                                                     @if($errors->has('smtp_password'))
                                                         <p class="help-block">
@@ -119,7 +119,7 @@
                                                 @csrf
                                                 <input type="hidden" name="type" value="app">
                                                 <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-                                                    <label for="app_id">{{ trans('global.setting.fields.app_id') }}*</label>
+                                                    <label for="app_id">{{ trans('global.setting.fields.app_id') }}<span class="text-red">*</span></label>
                                                     <input type="text" id="app_id" name="app_id" class="form-control" value="{{ $settings['app_id'] }}">
                                                     @if($errors->has('app_id'))
                                                         <p class="help-block">
@@ -131,7 +131,7 @@
                                                     </p>
                                                 </div>
                                                 <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-                                                    <label for="app_secret">{{ trans('global.setting.fields.app_secret') }}*</label>
+                                                    <label for="app_secret">{{ trans('global.setting.fields.app_secret') }}<span class="text-red">*</span></label>
                                                     <input type="text" id="app_secret" name="app_secret" class="form-control" value="{{ $settings['app_secret'] }}">
                                                     @if($errors->has('app_secret'))
                                                         <p class="help-block">
@@ -158,16 +158,40 @@
                                             <form action="{{ route("admin.settings.store") }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <input type="hidden" name="type" value="rewards">
-                                                <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-                                                    <label for="rewards_value">{{ trans('global.setting.fields.reward_value') }}*</label>
-                                                    <input type="text" id="rewards_value" name="reward_value" class="form-control" value="{{ $settings['reward_value'] }}">
-                                                    @if($errors->has('reward_value'))
+                                                <div class="form-group {{ $errors->has('primary_reward_value') ? 'has-error' : '' }}">
+                                                    <label for="primary_rewards_value">{{ trans('global.setting.fields.primary_reward_value') }}<span class="text-red">*</span></label>
+                                                    <input type="text" id="primary_rewards_value" name="primary_reward_value" class="form-control" value="{{ $settings['primary_reward_value'] }}">
+                                                    @if($errors->has('primary_reward_value'))
                                                         <p class="help-block">
-                                                            {{ $errors->first('reward_value') }}
+                                                            {{ $errors->first('primary_reward_value') }}
                                                         </p>
                                                     @endif
                                                     <p class="helper-block">
-                                                        {{ trans('global.setting.fields.reward_value_helper') }}
+                                                        {{ trans('global.setting.fields.primary_reward_value_helper') }}
+                                                    </p>
+                                                </div>
+                                                <div class="form-group {{ $errors->has('secondary_reward_value') ? 'has-error' : '' }}">
+                                                    <label for="secondary_reward_value">{{ trans('global.setting.fields.secondary_reward_value') }}<span class="text-red">*</span></label>
+                                                    <input type="text" id="secondary_reward_value" name="secondary_reward_value" class="form-control" value="{{ $settings['secondary_reward_value'] }}">
+                                                    @if($errors->has('secondary_reward_value'))
+                                                        <p class="help-block">
+                                                            {{ $errors->first('secondary_reward_value') }}
+                                                        </p>
+                                                    @endif
+                                                    <p class="helper-block">
+                                                        {{ trans('global.setting.fields.secondary_reward_value_helper') }}
+                                                    </p>
+                                                </div>
+                                                <div class="form-group {{ $errors->has('territory_reward_value') ? 'has-error' : '' }}">
+                                                    <label for="territory_rewards_value">{{ trans('global.setting.fields.territory_reward_value') }}<span class="text-red">*</span></label>
+                                                    <input type="text" id="territory_rewards_value" name="territory_reward_value" class="form-control" value="{{ $settings['territory_reward_value'] }}">
+                                                    @if($errors->has('territory_reward_value'))
+                                                        <p class="help-block">
+                                                            {{ $errors->first('territory_reward_value') }}
+                                                        </p>
+                                                    @endif
+                                                    <p class="helper-block">
+                                                        {{ trans('global.setting.fields.territory_reward_value_helper') }}
                                                     </p>
                                                 </div>
                                                 <div>

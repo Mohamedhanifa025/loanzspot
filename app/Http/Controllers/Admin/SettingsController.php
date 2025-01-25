@@ -30,7 +30,7 @@ class SettingsController extends Controller
       $settings = array();
       $settings['smtp'] = ['smtp_host', 'smtp_port', 'smtp_username', 'smtp_password'];
       $settings['app'] = ['app_id', 'app_secret'];
-      $settings['rewards'] = ['reward_value'];
+      $settings['rewards'] = ['primary_reward_value', 'secondary_reward_value', 'territory_reward_value'];
 
       if($request->has('type') && isset($settings[$request->type])) {
           $update_settings = $settings[$request->type];

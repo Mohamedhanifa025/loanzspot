@@ -69,7 +69,7 @@
                                 @endif
                                 @endif
                                 <th scope="col" data-orderable="false">{{ trans('global.loan.fields.type') }}</th>
-                                {{--<th scope="col" data-orderable="false">{{ trans('global.loan.fields.city') }}</th>--}}
+                                <th scope="col" data-orderable="false">{{ trans('global.loan.fields.referer') }}</th>
                                 <th scope="col" data-orderable="false">{{ trans('global.loan.fields.status') }}</th>
                                 @if($leadMaker)
                                     <th scope="col" class="" data-orderable="false">{{ trans('global.loan.fields.lead_date') }}</th>
@@ -105,6 +105,9 @@
                                     @endif
                                     <td>
                                         {{ $loan->type_text ?? '' }}
+                                    </td>
+                                    <td>
+                                        {{ $loan->lead_reference_id ? $loan->referrer->lead_maker_id : 'Admin' }}
                                     </td>
                                     {{--<td>
                                         {{ $loan->city ?? '' }}
